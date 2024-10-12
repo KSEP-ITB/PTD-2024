@@ -25,11 +25,13 @@ const navItems = [
   },
   {
     name: "Assigments",
-    path: "/assigments"
+    path: "/assigments",
+    requiresAuth: true,
   },
   {
     name: "Handbook",
-    path: "/handbook"
+    path: "/handbook",
+    requiresAuth: true,
   },
   {
     name: "Announcement",
@@ -52,6 +54,10 @@ const Navbar = () => {
 
         <div className='flex gap-x-12'>
           {navItems.map((item, index) => {
+            // Periksa apakah item memerlukan autentikasi
+            if (item.requiresAuth && !data) {
+              return null; // Jangan tampilkan jika belum login
+            }
             return (
               <Link key={index} href={item.path} className={cn(
                 'text-[#B6B6B6] font-bold',
@@ -93,6 +99,10 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent className='flex flex-col items-center justify-center gap-y-8'>
             {navItems.map((item, index) => {
+              // Periksa apakah item memerlukan autentikasi
+              if (item.requiresAuth && !data) {
+                return null; // Jangan tampilkan jika belum login
+              }
               return (
                 <Link key={index} href={item.path} className={cn(
                   'text-[#B6B6B6] font-bold',
