@@ -22,3 +22,11 @@ export const getAllAnnouncement = async () => {
     throw new Error("Cannot get announcement")
   }
 }
+
+export const deleteAnnouncement = async (id: string) => {
+  await prisma.announcement.delete({
+    where: {
+      id
+    }
+  })
+}

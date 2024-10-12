@@ -13,3 +13,9 @@ export const announcementSchema = z.object({
 })
 
 export type announcementSchemaType = z.infer<typeof announcementSchema>
+
+export type announcementSchemaTypeWithId = {
+  id: string
+  title: string
+  content: string
+}

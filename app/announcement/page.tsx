@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Dice from '@/app/assets/Dice1.png'
 import Sparkle from '@/app/assets/StarShining.png'
@@ -26,9 +26,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useForm } from 'react-hook-form'
-import { announcementSchema, announcementSchemaType } from '@/lib/schemas'
+import { announcementSchema, announcementSchemaType, announcementSchemaTypeWithId } from '@/lib/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from '@/components/ui/textarea'
+import { createAnnouncement, deleteAnnouncement, getAllAnnouncement } from '@/actions/announcement-actions'
+import { toast } from 'sonner'
 
 type Data = {
   title: string;
@@ -48,6 +50,17 @@ const Data = [
 
 const page = () => {
   const { data: session, status } = useSession()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [announcement, setAnnouncement] = useState<announcementSchemaTypeWithId[]>([])
+
+  useEffect(() => {
+    async function getAllAnnouncementData() {
+      const data = await getAllAnnouncement()
+      setAnnouncement(data)
+    }
+
+    getAllAnnouncementData()
+  }, [])
 
   const form = useForm<announcementSchemaType>({
     resolver: zodResolver(announcementSchema),
@@ -58,7 +71,29 @@ const page = () => {
   })
 
   async function onSubmit(values: announcementSchemaType) {
-    console.log(values)
+    try {
+      await createAnnouncement(values.title, values.content)
+      toast("Successfully create announcement")
+      setDialogOpen(false) // Close the dialog
+      const updatedAnnouncements = await getAllAnnouncement()
+      setAnnouncement(updatedAnnouncements)
+    } catch (error) {
+      console.log(error)
+      toast("Failed to create announcement")
+    }
+  }
+
+  async function handleDelete(id: string) {
+    try {
+      await deleteAnnouncement(id); // Call the function to delete the announcement
+      toast("Announcement deleted successfully");
+      // Update the state to remove the deleted announcement
+      const updatedAnnouncements = await getAllAnnouncement();
+      setAnnouncement(updatedAnnouncements);
+    } catch (error) {
+      console.log(error);
+      toast("Failed to delete announcement");
+    }
   }
 
   return (
@@ -80,12 +115,12 @@ const page = () => {
       </div>
 
       {/* ADMIN ONLY */}
-      {session?.user.role === "USER" && (
+      {session?.user.role === "ADMIN" && (
         <div className='bg-[#4E2865] w-full px-4 py-8 text-white flex flex-col items-center justify-center
         '>
-          <Dialog>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger>
-              <Button>
+              <Button onClick={() => setDialogOpen(true)}>
                 Add Announcement
               </Button>
             </DialogTrigger>
@@ -130,13 +165,15 @@ const page = () => {
         </div>  
       )}
 
-      <div className='bg-[#4E2865] px-20 py-20 z-20'>
-        {Data.map((item) => {
+<div className='bg-[#4E2865] px-20 py-20 z-20'>
+        {announcement.map((item) => {
           return (
             <AnnouncementCard
-            key={item.title}
-            title={item.title}
-            content={item.content}
+              key={item.id} // Use the ID as the key
+              id={item.id} // Pass the id to the card
+              title={item.title}
+              content={item.content}
+              onDelete={handleDelete} // Pass the delete handler
             />
           )
         })}
