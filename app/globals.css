@@ -99,7 +99,7 @@ body {
     @apply border-transparent bg-clip-border bg-gradient-to-b from-[#ED3633] to-[#EF7219]
   }
   .white-stroke-text {
-    -webkit-text-stroke: 1px #FFFFFF;
+    -webkit-text-stroke: 2px #FFFFFF;
   }
   .text-shadow-orange {
     text-shadow: 0px 0px 16px rgba(246, 222, 173, 0.5);
