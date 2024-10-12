@@ -67,12 +67,12 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Nav */}
-      <div className='flex wrapper items-center justify-between'>
+      <div className='lg:hidden flex wrapper items-center justify-between'>
         <Link href="/">  
           <h1 className='font-black text-3xl text-orange-gradient text-shadow-orange'>PTD KSEP</h1>
         </Link>
         <Sheet>
-          <SheetTrigger className='lg:hidden'>
+          <SheetTrigger>
             <Menu className='text-[#ED3633]' />
           </SheetTrigger>
           <SheetContent className='flex flex-col items-center justify-center gap-y-8'>
