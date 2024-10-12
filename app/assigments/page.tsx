@@ -1,6 +1,18 @@
+"use client"
+
 import Banner from '@/components/Assigment/AssigmentBanner'
 import AssignmentCard from '@/components/Assigment/AssigmentCard'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
 const AssignmentsPage = () => {
+  const { data } = useSession()
+  const router = useRouter()
+
+  if (!data) {
+    router.push("/sign-in")
+  }
+
   const assignments = [
     {
       day: 1,
