@@ -22,6 +22,7 @@ import { signInSchemaType } from '@/lib/schemas'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { signInHandler } from '@/actions/user-actions'
 
 const SignInPage = () => {
   const router = useRouter()
@@ -35,23 +36,26 @@ const SignInPage = () => {
   })
 
   async function onSubmit(values: signInSchemaType) {
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     username: values.username,
-    //     password: values.password,
-    //   }) 
-
-    //   if (result?.error) {
-    //     toast.error("An error occurred when signing in, no result");
-    //   } else {
-    //     toast.success("Signed in successfully");
-    //     router.push("/assigments")
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error("An error occurred when signing in, catch error");
-    // }
+    console.log("SUBMITTED WITH VALUE: ", values);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: values.username,
+        password: values.password,
+      });
+  
+      if (result?.error) {
+        console.error(result.error);
+        toast.error("An error occurred when signing in, no result");
+      } else {
+        toast.success("Signed in successfully");
+        router.push("/assigments")
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occurred when signing in, catch error");
+    }
+    
   }
 
   return (

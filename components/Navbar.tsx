@@ -14,6 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Menu } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react'
 
 const navItems = [
   {
@@ -35,6 +36,7 @@ const navItems = [
 ]
 
 const Navbar = () => {
+  const { data } = useSession();
   const pathname = usePathname()
 
   return (
@@ -59,6 +61,11 @@ const Navbar = () => {
           })}
         </div>
         
+        {data && (
+          <Button onClick={() => {signOut()}}>
+            SignOut
+          </Button>
+        )}
         <Link href={"/sign-in"}>
           <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80'>
             Sign In

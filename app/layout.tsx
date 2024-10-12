@@ -30,12 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en">
         <body className={`font-futura antialiased`}>
-          {/* <SessionProvider> */}
+          <SessionProvider>
             <Navbar />
             {children}
             <Toaster />
             <Footer />
-          {/* </SessionProvider> */}
+          </SessionProvider>
         </body>
     </html>
   );
