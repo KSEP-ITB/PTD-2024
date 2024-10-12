@@ -6,11 +6,35 @@ import Dice from '@/app/assets/Dice1.png'
 import Sparkle from '@/app/assets/StarShining.png'
 import AnnouncementCard from '@/components/AnnouncementCard/page'
 import { useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { useForm } from 'react-hook-form'
+import { announcementSchema, announcementSchemaType } from '@/lib/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Textarea } from '@/components/ui/textarea'
 
 type Data = {
   title: string;
   content: string;
 };
+
 const Data = [
   {
     title: "New Product Release Announcement",
@@ -24,6 +48,18 @@ const Data = [
 
 const page = () => {
   const { data: session, status } = useSession()
+
+  const form = useForm<announcementSchemaType>({
+    resolver: zodResolver(announcementSchema),
+    defaultValues: {
+      title: "",
+      content: ""
+    }
+  })
+
+  async function onSubmit(values: announcementSchemaType) {
+    console.log(values)
+  }
 
   return (
     <div className='w-full h-full overflow-clip'>
@@ -44,13 +80,54 @@ const page = () => {
       </div>
 
       {/* ADMIN ONLY */}
-      <div className='bg-[#4E2865] w-full px-4 py-2 text-white'>
-      {session ? (
-        <p>Selamat datang, {session.user?.name}</p>
-      ) : (
-        <p>Silakan masuk</p>
+      {session?.user.role === "USER" && (
+        <div className='bg-[#4E2865] w-full px-4 py-8 text-white flex flex-col items-center justify-center
+        '>
+          <Dialog>
+            <DialogTrigger>
+              <Button>
+                Add Announcement
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Announcement</DialogTitle>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField 
+                      control={form.control}
+                      name='title'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Enter title...' {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField 
+                      control={form.control}
+                      name='content'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Content</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder='Enter content...' {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                  <Button type='submit'>
+                    Create Announcement
+                  </Button>
+                </Form>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>  
       )}
-      </div>  
 
       <div className='bg-[#4E2865] px-20 py-20 z-20'>
         {Data.map((item) => {
