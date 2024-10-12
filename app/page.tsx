@@ -1,6 +1,6 @@
-import Hero from "@/components/Hero";
-import VisiMisi from "@/components/VisiMisi";
-import Testimoni from "@/components/Testimoni";
+import Hero from "@/components/Home/Hero";
+import VisiMisi from "@/components/Home/VisiMisi";
+import Testimoni from "@/components/Home/Testimoni";
 
 export default function Home() {
   return (

@@ -31,7 +31,7 @@ const socialMediaItems = [
 
 const Footer = () => {
   return (
-    <div className='wrapper flex flex-col items-center gap-y-12'>
+    <div className='wrapper flex flex-col items-center gap-y-12 z-20'>
       <div className='flex items-center gap-x-4'>
         <Image 
           src={KSEPLogo}
