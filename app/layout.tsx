@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,12 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-futura antialiased`}>
-        <Navbar />
-        {children}
-        <Toaster />
-        <Footer />
-      </body>
+        <body className={`font-futura antialiased`}>
+          {/* <SessionProvider> */}
+            <Navbar />
+            {children}
+            <Toaster />
+            <Footer />
+          {/* </SessionProvider> */}
+        </body>
     </html>
   );
 }

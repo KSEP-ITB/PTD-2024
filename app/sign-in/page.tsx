@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +25,7 @@ import { toast } from 'sonner'
 
 const SignInPage = () => {
   const router = useRouter()
+
   const form = useForm<signInSchemaType>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -35,18 +35,23 @@ const SignInPage = () => {
   })
 
   async function onSubmit(values: signInSchemaType) {
-    const res = await signIn('credentials', {
-      redirect: false,
-      username: values.username,
-      password: values.password,
-    })
+    // try {
+    //   const result = await signIn('credentials', {
+    //     redirect: false,
+    //     username: values.username,
+    //     password: values.password,
+    //   }) 
 
-    if (res?.error) {
-      toast("Sign in error")
-    } else {
-      toast("Sign in success")
-      router.push("/assigments")
-    }
+    //   if (result?.error) {
+    //     toast.error("An error occurred when signing in, no result");
+    //   } else {
+    //     toast.success("Signed in successfully");
+    //     router.push("/assigments")
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   toast.error("An error occurred when signing in, catch error");
+    // }
   }
 
   return (
@@ -87,7 +92,7 @@ const SignInPage = () => {
                 <FormItem>
                   <FormLabel className='text-white text-[18px]'>Password</FormLabel>
                   <FormControl>
-                    <Input className='bg-white focus:ring-none rounded-full w-[250px] md:max-w-none md:w-[500px]' placeholder='Enter your password' {...field} />
+                    <Input type='password' className='bg-white focus:ring-none rounded-full w-[250px] md:max-w-none md:w-[500px]' placeholder='Enter your password' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
