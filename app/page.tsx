@@ -1,9 +1,13 @@
-import Image from "next/image";
+import Hero from "@/components/Hero";
+import VisiMisi from "@/components/VisiMisi";
+import Testimoni from "@/components/Testimoni";
 
 export default function Home() {
   return (
-    <div>
-      
-    </div>
+    <main>
+      <Hero/>
+      <VisiMisi/>
+      <Testimoni/>
+    </main>
   );
 }
