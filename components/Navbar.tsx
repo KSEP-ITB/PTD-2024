@@ -13,6 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { Menu } from 'lucide-react';
 
 const navItems = [
   {
@@ -33,8 +34,6 @@ const navItems = [
   }
 ]
 
-
-
 const Navbar = () => {
   const pathname = usePathname()
 
@@ -42,7 +41,7 @@ const Navbar = () => {
     <header className='w-full'>
       
       {/* Desktop Nav */}
-      <nav className='w-full mx-auto max-w-7xl overflow-x-hidden p-4 flex items-center justify-between z-20'>
+      <nav className='w-full mx-auto max-w-7xl overflow-x-hidden p-4 hidden lg:flex items-center justify-between z-20'>
         <Link href="/">  
           <h1 className='font-black text-3xl text-orange-gradient text-shadow-orange'>PTD KSEP</h1>
         </Link>
@@ -68,8 +67,28 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Nav */}
-      
-
+      <div className='flex wrapper items-center justify-between'>
+        <Link href="/">  
+          <h1 className='font-black text-3xl text-orange-gradient text-shadow-orange'>PTD KSEP</h1>
+        </Link>
+        <Sheet>
+          <SheetTrigger className='lg:hidden'>
+            <Menu className='text-[#ED3633]' />
+          </SheetTrigger>
+          <SheetContent className='flex flex-col items-center justify-center gap-y-8'>
+            {navItems.map((item, index) => {
+              return (
+                <Link key={index} href={item.path} className={cn(
+                  'text-[#B6B6B6] font-bold',
+                  pathname === item.path && "text-orange-gradient"
+                )}>
+                  {item.name}
+                </Link>
+              )
+            })}
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   )
 }
