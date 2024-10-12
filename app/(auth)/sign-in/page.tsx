@@ -20,8 +20,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { signInSchema } from '@/lib/schemas'
 import { signInSchemaType } from '@/lib/schemas'
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const SignInPage = () => {
+  const router = useRouter()
   const form = useForm<signInSchemaType>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -30,8 +34,19 @@ const SignInPage = () => {
     }
   })
 
-  function onSubmit(values: signInSchemaType) {
-    console.log(values)
+  async function onSubmit(values: signInSchemaType) {
+    const res = await signIn('credentials', {
+      redirect: false,
+      username: values.username,
+      password: values.password,
+    })
+
+    if (res?.error) {
+      toast("Sign in error")
+    } else {
+      toast("Sign in success")
+      router.push("/assigments")
+    }
   }
 
   return (
