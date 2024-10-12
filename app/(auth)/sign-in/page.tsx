@@ -35,7 +35,7 @@ const SignInPage = () => {
   }
 
   return (
-    <div className='relative h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#ED462D] to-[#FD8F10]'>
+    <div className='relative h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#ED462D] to-[#FD8F10] wrapper'>
       <div className='bg-white/25 rounded-xl flex flex-col items-center z-10 w-[1000px] p-20 gap-y-4'>
         <Image
           src={LogoPTD}
@@ -59,7 +59,7 @@ const SignInPage = () => {
                 <FormItem>
                   <FormLabel className='text-white text-[18px]'>Username</FormLabel>
                   <FormControl>
-                    <Input className='bg-white focus:ring-none rounded-full w-[500px]' placeholder='Enter your username' {...field} />
+                    <Input className='bg-white focus:ring-none rounded-full w-[250px] md:max-w-none md:w-[500px]' placeholder='Enter your username' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,7 +72,7 @@ const SignInPage = () => {
                 <FormItem>
                   <FormLabel className='text-white text-[18px]'>Password</FormLabel>
                   <FormControl>
-                    <Input className='bg-white focus:ring-none rounded-full w-[500px]' placeholder='Enter your password' {...field} />
+                    <Input className='bg-white focus:ring-none rounded-full w-[250px] md:max-w-none md:w-[500px]' placeholder='Enter your password' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -59,9 +59,9 @@ const Navbar = () => {
           })}
         </div>
         
-        <Link href={"/auth/daftar"}>
-          <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633]'>
-            Daftar
+        <Link href={"/sign-in"}>
+          <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80'>
+            Sign In
           </Button>
         </Link>
       </nav>
