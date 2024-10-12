@@ -35,8 +35,8 @@ const SignInPage = () => {
   }
 
   return (
-    <div className='relative h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#ED462D] to-[#FD8F10] wrapper'>
-      <div className='bg-white/25 rounded-xl flex flex-col items-center z-10 w-[1000px] p-20 gap-y-4'>
+    <div className='relative h-screen w-full flex items-center justify-center overflow-y-hidden bg-gradient-to-br from-[#ED462D] to-[#FD8F10] px-4'>
+      <div className='bg-white/25 rounded-xl flex flex-col items-center z-10 w-full lg:w-[1000px] p-20 gap-y-4'>
         <Image
           src={LogoPTD}
           alt='Logo PTD'
@@ -90,7 +90,7 @@ const SignInPage = () => {
       <Image 
         src={Background}
         alt='Star Background'
-        className='absolute w-full h-[600px] translate-y-[40px] z-0'
+        className='absolute w-full h-[600px] translate-y-[40px] z-0 object-cover'
       />
     </div>
   )
