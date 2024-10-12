@@ -99,7 +99,7 @@ body {
     @apply border-transparent bg-clip-border bg-gradient-to-b from-[#ED3633] to-[#EF7219]
   }
   .white-stroke-text {
-    -webkit-text-stroke: 1px #FFFFFF; /* Using your custom purple */
+    -webkit-text-stroke: 2px #FFFFFF;
   }
   .white-stroke-text-title {
     background-color: #FFFFFF;

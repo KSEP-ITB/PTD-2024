@@ -32,7 +32,7 @@ const Navbar = () => {
     <header className='w-full'>
       
       {/* Desktop Nav */}
-      <nav className='w-full mx-auto max-w-7xl overflow-x-hidden p-4 flex items-center justify-between'>
+      <nav className='w-full mx-auto max-w-7xl overflow-x-hidden p-4 flex items-center justify-between z-20'>
         <Link href="/">  
           <h1 className='font-black text-3xl text-orange-gradient text-shadow-orange'>PTD KSEP</h1>
         </Link>
@@ -49,10 +49,12 @@ const Navbar = () => {
             )
           })}
         </div>
-
-        <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633]'>
-          Daftar
-        </Button>
+        
+        <Link href={"/auth/daftar"}>
+          <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633]'>
+            Daftar
+          </Button>
+        </Link>
       </nav>
 
       {/* Mobile Nav */}
