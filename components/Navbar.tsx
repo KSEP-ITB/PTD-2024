@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/sheet"
 import { Menu } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react'
+import { LogIn } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 const navItems = [
   {
@@ -62,15 +64,22 @@ const Navbar = () => {
         </div>
         
         {data && (
-          <Button onClick={() => {signOut()}}>
-            SignOut
+          <Button 
+            onClick={() => {signOut()}}
+            variant={"outline"} 
+            className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80 flex items-center gap-x-2'
+          >
+            Sign Out <LogOut className='w-4 h-4' />
           </Button>
         )}
-        <Link href={"/sign-in"}>
-          <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80'>
-            Sign In
-          </Button>
-        </Link>
+
+        {!data && (
+          <Link href={"/sign-in"}>
+            <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80 flex items-center gap-x-2'>
+              Sign In <LogIn className='w-4 h-4' />
+            </Button>
+          </Link>
+        )}
       </nav>
 
       {/* Mobile Nav */}
@@ -93,6 +102,23 @@ const Navbar = () => {
                 </Link>
               )
             })}
+            {data && (
+              <Button 
+                onClick={() => {signOut()}}
+                variant={"outline"} 
+                className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80 flex items-center gap-x-2'
+              >
+                Sign Out <LogOut className='w-4 h-4' />
+              </Button>
+            )}
+
+            {!data && (
+              <Link href={"/sign-in"}>
+                <Button variant={"outline"} className='rounded-full border-2 border-[#ED3633] text-[#ED3633] hover:text-[#ED3633]/80 flex items-center gap-x-2'>
+                  Sign In <LogIn className='w-4 h-4' />
+                </Button>
+              </Link>
+            )}
           </SheetContent>
         </Sheet>
       </div>
