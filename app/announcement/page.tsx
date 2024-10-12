@@ -118,10 +118,11 @@ const page = () => {
                         </FormItem>
                       )}
                     />
+                    <div className='py-2' />
+                    <Button type='submit' className='w-full'>
+                      Create Announcement
+                    </Button>
                   </form>
-                  <Button type='submit'>
-                    Create Announcement
-                  </Button>
                 </Form>
               </DialogHeader>
             </DialogContent>
