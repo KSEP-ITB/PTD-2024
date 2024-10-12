@@ -1,13 +1,24 @@
 "use client"
 
-import ImageUpload from '@/components/image-upload';
 import { UploadButton } from '@/utils/uploadthing';
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <ImageUpload />
+      <UploadButton
+        endpoint="imageUploader"
+        onClientUploadComplete={(res) => {
+          // Do something with the response
+          console.log("Files: ", res);
+          alert("Upload Completed");
+        }}
+        onUploadError={(error: Error) => {
+          // Do something with the error.
+          alert(`ERROR! ${error.message}`);
+          console.log(error)
+        }}
+      />
     </div>
   )
 }
