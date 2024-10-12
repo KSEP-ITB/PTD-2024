@@ -49,3 +49,17 @@ export const signInHandler = async (username: string, password: string) => {
     console.log(error);
   }
 }
+
+export const getUserById = async (id: string) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id
+      }
+    })
+
+    return user;
+  } catch (error) {
+    throw new Error("Cannot find the specific user")    
+  }
+}

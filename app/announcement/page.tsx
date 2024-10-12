@@ -1,8 +1,11 @@
+"use client"
+
 import React from 'react'
 import Image from 'next/image'
 import Dice from '@/app/assets/Dice1.png'
 import Sparkle from '@/app/assets/StarShining.png'
 import AnnouncementCard from '@/components/AnnouncementCard/page'
+import { useSession } from 'next-auth/react'
 
 type Data = {
   title: string;
@@ -20,6 +23,8 @@ const Data = [
 ]
 
 const page = () => {
+  const { data: session, status } = useSession()
+
   return (
     <div className='w-full h-full overflow-clip'>
       <div className='relative flex bg-gradient-to-r from-[#A958A7] to-[#3E205A] items-center justify-center h-[200px] md:h-[275px]'>
@@ -37,6 +42,16 @@ const page = () => {
         className='absolute -top-[170px] -right-[140px] md:-right-[100px] md:-top-[100px]'
         />
       </div>
+
+      {/* ADMIN ONLY */}
+      <div className='bg-[#4E2865] w-full px-4 py-2 text-white'>
+      {session ? (
+        <p>Selamat datang, {session.user?.name}</p>
+      ) : (
+        <p>Silakan masuk</p>
+      )}
+      </div>  
+
       <div className='bg-[#4E2865] px-20 py-20 z-20'>
         {Data.map((item) => {
           return (

@@ -33,6 +33,7 @@ const AssignmentsPage = () => {
       status: "Expired"
     }
   ]
+  
   return (
     <div className="min-h-screen bg-[#FFCBD5]">
       <Banner />
