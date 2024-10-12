@@ -39,7 +39,7 @@ const VisiMisi = () => {
                         alt="Star"
                         className="absolute z-0 md:left-[45%] md:top-0 top-[50%] left-0"
                     />
-                    <p className="text-[#3E205A] p-5 bg-white/60 rounded-lg mt-5"> Rorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.</p>
+                    <p className="text-[#3E205A] p-5 bg-white/60 rounded-lg mt-5">Pendidikan Tingkat Dasar KSEP ITB is a place to learn about the world of economics and capital markets as well as a place for applicants to join and fulfill the profiles held by KSEP ITB</p>
                 </div>
             </div>
 
