@@ -1,4 +1,7 @@
+"use client"
+
 import { deleteAssigmentForStudent } from '@/actions/assigment-actions'
+import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 
 interface AssignmentCardProps {
@@ -11,6 +14,8 @@ interface AssignmentCardProps {
 }
 
 const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: AssignmentCardProps) => {
+  const { data: session } = useSession()
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Submit':
@@ -43,15 +48,19 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
           <p className="text-sm">Due Date: {dueDate}</p>
         </div>
         <div className="flex space-x-2">
-          <button className={`rounded-lg px-4 py-2 ${getStatusColor(status)}`}>
-            Ini Status
-          </button>
-          <button
-            onClick={handleDelete}
-            className="rounded-lg bg-red-600 px-4 py-2 text-white"
-          >
-            Delete
-          </button>
+          {session?.user.role === "USER" && (
+            <button className={`rounded-lg px-4 py-2 ${getStatusColor(status)}`}>
+              Submit
+            </button>
+          )}
+          {session?.user.role === "ADMIN" && (
+            <button
+              onClick={handleDelete}
+              className="rounded-lg bg-red-600 px-4 py-2 text-white"
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
       <p className='py-2'>
