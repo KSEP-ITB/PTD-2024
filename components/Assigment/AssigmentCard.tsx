@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '../ui/button'
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface AssignmentCardProps {
   id: string // Tambahkan id untuk menghapus tugas
@@ -114,12 +115,19 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
             </Dialog>
           )}
           {session?.user.role === "ADMIN" && (
-            <button
-              onClick={handleDelete}
-              className="rounded-lg bg-red-600 px-4 py-2 text-white"
-            >
-              Delete
-            </button>
+            <div>
+              <button
+                onClick={handleDelete}
+                className="rounded-lg bg-red-600 px-4 py-2 text-white"
+              >
+                Delete
+              </button>
+              <Link href={`/assignments/${id}`}>
+                <Button>
+                  See Responden
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
       </div>

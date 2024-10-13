@@ -29,9 +29,9 @@ export const createStudentAssigment = async (userId: string, assignmentId: strin
 }
 
 export const getAllStudentAssigmentByAssigmentId = async (id: string) => {
-  return await prisma.assignmentForStudent.findMany({
+  return await prisma.studentAssignment.findMany({
     where: {
-      id,
+      assignmentId: id
     }
   })
 }

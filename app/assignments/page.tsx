@@ -50,27 +50,6 @@ const AssignmentsPage = () => {
     router.push("/sign-in")
   }
 
-  const assignments = [
-    {
-      day: 1,
-      title: "Assignment Title",
-      dueDate: "15-05-2025",
-      status: "Submit"
-    },
-    {
-      day: 1,
-      title: "Assignment Title",
-      dueDate: "15-05-2025",
-      status: "Submitted"
-    },
-    {
-      day: 1,
-      title: "Assignment Title",
-      dueDate: "15-05-2025",
-      status: "Expired"
-    }
-  ]
-
   const form = useForm<assignmentForStudentType>({
     resolver: zodResolver(assignmentForStudentSchema),
     defaultValues: {
