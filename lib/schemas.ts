@@ -55,6 +55,7 @@ export const assignmentForStudentSchema = z.object({
   day: z.string().min(1),
   title: z.string().min(8),
   description: z.string().min(8),
+  dueDate: z.string()
 });
 
 export type assignmentForStudentType = z.infer<typeof assignmentForStudentSchema>;

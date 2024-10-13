@@ -77,13 +77,14 @@ const AssignmentsPage = () => {
       day: "",
       title: "",
       description: "",
+      dueDate: "",
     }
   })
 
   async function onSubmit(values: assignmentForStudentType) {
     console.log(values)
     try {
-      await createAssigmentForStudent(values.day, values.title, values.description)
+      await createAssigmentForStudent(values.day, values.title, values.description, values.dueDate)
       toast("Successfully created an assigment")
       setDialogOpen(false)
 
@@ -158,12 +159,12 @@ const AssignmentsPage = () => {
                     />
                     <FormField 
                       control={form.control}
-                      name='title'
+                      name='dueDate'
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel>dueDate</FormLabel>
                           <FormControl>
-                            <Input placeholder='Enter title...' {...field} />
+                            <Input placeholder='Ikutin format DD/MM/YY' {...field} />
                           </FormControl>
                         </FormItem>
                       )}

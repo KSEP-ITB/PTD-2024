@@ -36,13 +36,14 @@ export const getAllStudentAssigmentByAssigmentId = async (id: string) => {
   })
 }
 
-export const createAssigmentForStudent = async(day: string, title: string, description: string) => {
+export const createAssigmentForStudent = async(day: string, title: string, description: string, dueDate: string) => {
   try {
     const newAssignmentForStudent = await prisma.assignmentForStudent.create({
       data: {
         day,
         title,
         description,
+        dueDate,
       },
     });
 
