@@ -85,9 +85,17 @@ const AssignmentsPage = () => {
     try {
       await createAssigmentForStudent(values.day, values.title, values.description)
       toast("Successfully created an assigment")
+      setDialogOpen(false)
+
+      const data = await getAllAssigmentForStudent()
+      setAssigment(data)
     } catch (error) {
       toast("Failed to create an assigment")
     }
+  }
+
+  const handleDeleteAssignment = (id: string) => {
+    setAssigment(prev => prev.filter(assignment => assignment.id !== id))
   }
   
   return (
@@ -114,7 +122,7 @@ const AssignmentsPage = () => {
                       name='day'
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel>Day</FormLabel>
                           <FormControl>
                             <Input placeholder='Enter day...' {...field} />
                           </FormControl>
@@ -126,7 +134,7 @@ const AssignmentsPage = () => {
                       name='title'
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Content</FormLabel>
+                          <FormLabel>Title</FormLabel>
                           <FormControl>
                             <Input placeholder='Enter title...' {...field} />
                           </FormControl>
@@ -144,6 +152,18 @@ const AssignmentsPage = () => {
                               placeholder='Enter description...'
                               {...field}
                             />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField 
+                      control={form.control}
+                      name='title'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Enter title...' {...field} />
                           </FormControl>
                         </FormItem>
                       )}
@@ -169,16 +189,18 @@ const AssignmentsPage = () => {
           />
         </div>
         <div className="space-y-4">
-          {assignments.map((assignment, index) => (
-            <AssignmentCard
-              key={index}
-              day={assignment.day}
-              title={assignment.title}
-              dueDate={assignment.dueDate}
-              status={assignment.status}
-            />
-          ))}
-        </div>
+        {assigment.map((assignment, index) => (
+          <AssignmentCard
+            key={index}
+            id={assignment.id}
+            day={assignment.day}
+            title={assignment.title}
+            description={assignment.description}
+            dueDate="15-05-2025" // Misalnya due date tetap
+            onDelete={handleDeleteAssignment}
+          />
+        ))}
+      </div>
       </div>
     </div>
   )

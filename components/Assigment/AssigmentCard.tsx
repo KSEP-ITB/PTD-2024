@@ -1,11 +1,16 @@
+import { deleteAssigmentForStudent } from '@/actions/assigment-actions'
+import { toast } from 'sonner'
+
 interface AssignmentCardProps {
-  day: number
+  id: string // Tambahkan id untuk menghapus tugas
+  day: string
   title: string
   dueDate: string
-  status: string
+  description: string
+  onDelete: (id: string) => void // Callback untuk penghapusan tugas
 }
 
-const AssignmentCard = ({ day, title, dueDate, status }: AssignmentCardProps) => {
+const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: AssignmentCardProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Submit':
@@ -19,18 +24,39 @@ const AssignmentCard = ({ day, title, dueDate, status }: AssignmentCardProps) =>
     }
   }
 
+  const handleDelete = async () => {
+    try {
+      await deleteAssigmentForStudent(id)
+      toast('Assignment deleted successfully')
+      onDelete(id) // Panggil callback untuk menghapus dari daftar
+    } catch (error) {
+      toast('Failed to delete assignment')
+    }
+  }
+
   return (
     <div className="rounded-xl bg-gradient-to-r from-[#E84756] to-[#A958A7] p-6 text-white shadow-lg">
       <div className="flex items-center justify-between">
         <div>
           <p className="mb-1">Day {day}</p>
           <h2 className="text-xl font-bold">{title}</h2>
-          <p className="text-sm">Due Date : {dueDate}</p>
+          <p className="text-sm">Due Date: {dueDate}</p>
         </div>
-        <button className={`rounded-lg px-4 py-2 ${getStatusColor(status)}`}>
-          {status}
-        </button>
+        <div className="flex space-x-2">
+          <button className={`rounded-lg px-4 py-2 ${getStatusColor(status)}`}>
+            Ini Status
+          </button>
+          <button
+            onClick={handleDelete}
+            className="rounded-lg bg-red-600 px-4 py-2 text-white"
+          >
+            Delete
+          </button>
+        </div>
       </div>
+      <p className='py-2'>
+        {description}
+      </p>
     </div>
   )
 }
