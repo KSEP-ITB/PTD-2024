@@ -4,12 +4,49 @@ import Banner from '@/components/Assigment/AssigmentBanner'
 import AssignmentCard from '@/components/Assigment/AssigmentCard'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { assignmentForStudentSchema, assignmentForStudentType, assignmentForStudentTypeWithId } from '@/lib/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Textarea } from '@/components/ui/textarea'
+import { createAssigmentForStudent, createStudentAssigment, getAllAssigmentForStudent } from '@/actions/assigment-actions'
+import { toast } from 'sonner'
 
 const AssignmentsPage = () => {
-  const { data } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [assigment, setAssigment] = useState<assignmentForStudentTypeWithId[]>([])
 
-  if (!data) {
+  useEffect(() => {
+    async function getAllAssigmentData() {
+      const data = await getAllAssigmentForStudent()
+      setAssigment(data)
+    }
+
+    getAllAssigmentData()
+  }, [])
+
+  if (!session) {
     router.push("/sign-in")
   }
 
@@ -33,10 +70,95 @@ const AssignmentsPage = () => {
       status: "Expired"
     }
   ]
+
+  const form = useForm<assignmentForStudentType>({
+    resolver: zodResolver(assignmentForStudentSchema),
+    defaultValues: {
+      day: "",
+      title: "",
+      description: "",
+    }
+  })
+
+  async function onSubmit(values: assignmentForStudentType) {
+    console.log(values)
+    try {
+      await createAssigmentForStudent(values.day, values.title, values.description)
+      toast("Successfully created an assigment")
+    } catch (error) {
+      toast("Failed to create an assigment")
+    }
+  }
   
   return (
     <div className="min-h-screen bg-[#FFCBD5]">
       <Banner />
+
+      {/* ADMIN ONLY */}
+      {session?.user.role === "ADMIN" && (
+        <div className='bg-[#FFCBD5] w-full px-4 py-8 text-white flex flex-col items-center justify-center
+        '>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger>
+              <Button onClick={() => setDialogOpen(true)}>
+                Add Assigment
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Assigment</DialogTitle>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField 
+                      control={form.control}
+                      name='day'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Enter day...' {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField 
+                      control={form.control}
+                      name='title'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Content</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Enter title...' {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField 
+                      control={form.control}
+                      name='description'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder='Enter description...'
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <div className='py-2' />
+                    <Button type='submit' className='w-full'>
+                      Create Announcement
+                    </Button>
+                  </form>
+                </Form>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>  
+      )}
       
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-8">

@@ -36,16 +36,8 @@ export const getAllStudentAssigmentByAssigmentId = async (id: string) => {
   })
 }
 
-export const createAssigmentForStudent = async(adminId: string, day: string, title: string, description: string) => {
+export const createAssigmentForStudent = async(day: string, title: string, description: string) => {
   try {
-    const admin = await prisma.user.findUnique({
-      where: { id: adminId },
-    });
-  
-    if (!admin || admin.role !== 'ADMIN') {
-      throw new Error('Hanya pengguna dengan peran ADMIN yang dapat membuat tugas untuk siswa.');
-    }
-
     const newAssignmentForStudent = await prisma.assignmentForStudent.create({
       data: {
         day,
@@ -58,4 +50,16 @@ export const createAssigmentForStudent = async(adminId: string, day: string, tit
   } catch (error) {
     throw new Error('Cant create assigment for student');
   }
+}
+
+export const getAllAssigmentForStudent = async () => {
+  return await prisma.assignmentForStudent.findMany()
+}
+
+export const deleteAssigmentForStudent = async (id: string) => {
+  return await prisma.assignmentForStudent.delete({
+    where: {
+      id,
+    }
+  })
 }
