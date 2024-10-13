@@ -8,26 +8,29 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  username    String       @unique
+  id          String               @id @default(uuid())
+  username    String               @unique
   role        Role
   password    String
-  assignments StudeAssignment[]
+  assignments StudentAssignment[]
 }
 
-model StudeAssignment {
-  id          String   @id @default(uuid())
-  link        String
-  createdAt   DateTime @default(now())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+model StudentAssignment {
+  id                   String               @id @default(uuid())
+  link                 String
+  createdAt            DateTime             @default(now())
+  userId               String
+  user                 User                 @relation(fields: [userId], references: [id])
+  assignmentId         String
+  assignmentForStudent AssignmentForStudent @relation(fields: [assignmentId], references: [id])
 }
 
-model AssigmentForStudent {
-  id          String   @id @default(uuid())
+model AssignmentForStudent {
+  id          String              @id @default(uuid())
   day         String
   title       String
   description String
+  submissions StudentAssignment[]
 }
 
 enum Role {
