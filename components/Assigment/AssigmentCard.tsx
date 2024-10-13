@@ -1,7 +1,7 @@
 "use client"
 
 import { deleteAssigmentForStudent } from '@/actions/assigment-actions'
-import { createStudentAssigment } from '@/actions/assigment-actions'
+import { createStudentAssigment, getStudentAssigmentByAssigmentIdAndUserId } from '@/actions/assigment-actions'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import {
@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '../ui/button'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 interface AssignmentCardProps {
@@ -28,12 +28,25 @@ interface AssignmentCardProps {
 const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: AssignmentCardProps) => {
   const { data: session } = useSession()
   const [link, setLink] = useState<string>('')
+  const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false) // State baru untuk melacak status pengiriman
+
+  useEffect(() => {
+    const checkSubmission = async () => {
+      if (session?.user.id) {
+        const hasSubmitted = await getStudentAssigmentByAssigmentIdAndUserId(id, session.user.id);
+        setIsSubmitted(hasSubmitted); // Atur status pengiriman
+      }
+    };
+    checkSubmission();
+  }, [id, session]);
 
   const handleDelete = async () => {
     try {
       await deleteAssigmentForStudent(id)
       toast('Assignment deleted successfully')
       onDelete(id) // Panggil callback untuk menghapus dari daftar
+      setIsOpen(false)
     } catch (error) {
       toast('Failed to delete assignment')
     }
@@ -46,10 +59,10 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
     }
 
     try {
-      // Mengirimkan tautan tugas menggunakan fungsi createStudentAssigment
       await createStudentAssigment(session?.user.id as string, id, link)
       toast('Assignment submitted successfully')
       setLink('') // Reset input setelah submit
+      setIsSubmitted(true) // Set status pengiriman menjadi true
     } catch (error) {
       toast('Failed to submit assignment')
     }
@@ -65,9 +78,9 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
         </div>
         <div className="flex space-x-2">
           {session?.user.role === "USER" && (
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger>
-                <Button>
+                <Button onClick={() => setIsOpen(true)} disabled={isSubmitted}> {/* Nonaktifkan tombol jika sudah disubmit */}
                   Submit
                 </Button>
               </DialogTrigger>
@@ -86,7 +99,7 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
                   onChange={(e) => setLink(e.target.value)}
                   className="w-full p-2 mt-4 text-black rounded-md"
                 />
-                <Button onClick={handleSubmit} className="mt-4">
+                <Button onClick={handleSubmit} className="mt-4" disabled={isSubmitted}> {/* Nonaktifkan tombol jika sudah disubmit */}
                   Submit Link
                 </Button>
               </DialogContent>

@@ -36,6 +36,17 @@ export const getAllStudentAssigmentByAssigmentId = async (id: string) => {
   })
 }
 
+export const getStudentAssigmentByAssigmentIdAndUserId = async (assigmentId: string, userId: string) => {
+  const data = prisma.studentAssignment.findFirst({
+    where: {
+      assignmentId: assigmentId,
+      userId: userId
+    }
+  })
+
+  return data !== null
+}
+
 export const createAssigmentForStudent = async(day: string, title: string, description: string, dueDate: string) => {
   try {
     const newAssignmentForStudent = await prisma.assignmentForStudent.create({

@@ -51,7 +51,7 @@ const page = () => {
         </h2>
         <ul>
           {submissions.map((item) => (
-            <li key={item.id}>
+            <li key={item.id} className='px-2 py-4 border-white border-2 bg-white/25 rounded-lg'>
               <p>ID: {item.id}</p>
               <p>User: {item.userName}</p>
               <p>Link: <a href={item.link}>{item.link}</a></p>
