@@ -24,8 +24,8 @@ const navItems = [
     path: "/",
   },
   {
-    name: "Assigments",
-    path: "/assigments",
+    name: "Assignments",
+    path: "/assignments",
     requiresAuth: true,
   },
   {

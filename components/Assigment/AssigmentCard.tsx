@@ -3,6 +3,16 @@
 import { deleteAssigmentForStudent } from '@/actions/assigment-actions'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from '../ui/button'
+import { useState } from 'react'
 
 interface AssignmentCardProps {
   id: string // Tambahkan id untuk menghapus tugas
@@ -15,6 +25,7 @@ interface AssignmentCardProps {
 
 const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: AssignmentCardProps) => {
   const { data: session } = useSession()
+  const [file, setFile] = useState<File | null>(null)
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -39,6 +50,32 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
     }
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0])
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (!file) {
+      toast('Please select a file to upload')
+      return
+    }
+
+    try {
+      // Simpan file menggunakan API upload (misalnya menggunakan FormData)
+      const formData = new FormData()
+      formData.append('file', file)
+
+      // TODO: Implement file upload logic here
+      // Example: await uploadFileToServer(formData)
+
+      toast('File uploaded successfully')
+    } catch (error) {
+      toast('Failed to upload file')
+    }
+  }
+
   return (
     <div className="rounded-xl bg-gradient-to-r from-[#E84756] to-[#A958A7] p-6 text-white shadow-lg">
       <div className="flex items-center justify-between">
@@ -49,9 +86,32 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
         </div>
         <div className="flex space-x-2">
           {session?.user.role === "USER" && (
-            <button className={`rounded-lg px-4 py-2 ${getStatusColor(status)}`}>
-              Submit
-            </button>
+            <Dialog>
+              <DialogTrigger>
+                <Button>
+                  Submit
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Submit for {title} Task</DialogTitle>
+                  <DialogDescription>
+                    Upload your assignment file in PDF format.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogContent>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    className="mb-4"
+                  />
+                  <Button onClick={handleSubmit} disabled={!file}>
+                    Upload
+                  </Button>
+                </DialogContent>
+              </DialogContent>
+            </Dialog>
           )}
           {session?.user.role === "ADMIN" && (
             <button

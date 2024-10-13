@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Background from '@/public/SignInBackground.png'
 import SignInText from '@/public/SIGNIN.png'
@@ -19,13 +19,18 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { signInSchema } from '@/lib/schemas'
 import { signInSchemaType } from '@/lib/schemas'
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { signInHandler } from '@/actions/user-actions'
 
 const SignInPage = () => {
+  const { data: session } = useSession()
   const router = useRouter()
+
+  if (session) {
+    router.push("/assignments")
+  }
 
   const form = useForm<signInSchemaType>({
     resolver: zodResolver(signInSchema),
