@@ -1,8 +1,8 @@
-import z, { string } from 'zod'
+import z from 'zod'
 
 export const signInSchema = z.object({
-  username: z.string().min(8),
-  password: z.string().min(8)
+  username: z.string().min(2),
+  password: z.string().min(2)
 })
 
 export type signInSchemaType = z.infer<typeof signInSchema>

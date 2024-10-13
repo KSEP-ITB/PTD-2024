@@ -164,7 +164,7 @@ const AssignmentsPage = () => {
                         <FormItem>
                           <FormLabel>dueDate</FormLabel>
                           <FormControl>
-                            <Input placeholder='Ikutin format DD/MM/YY' {...field} />
+                            <Input placeholder='Ikutin format DD/MM/YYYY' {...field} />
                           </FormControl>
                         </FormItem>
                       )}
