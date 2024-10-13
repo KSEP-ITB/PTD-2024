@@ -1,6 +1,7 @@
 "use client"
 
 import { deleteAssigmentForStudent } from '@/actions/assigment-actions'
+import { createStudentAssigment } from '@/actions/assigment-actions'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import {
@@ -26,20 +27,7 @@ interface AssignmentCardProps {
 
 const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: AssignmentCardProps) => {
   const { data: session } = useSession()
-  const [file, setFile] = useState<File | null>(null)
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Submit':
-        return 'bg-white text-black'
-      case 'Submitted':
-        return 'bg-[#D3FFD3] text-black'
-      case 'Expired':
-        return 'bg-[#FFD3D3] text-black'
-      default:
-        return 'bg-white text-black'
-    }
-  }
+  const [link, setLink] = useState<string>('')
 
   const handleDelete = async () => {
     try {
@@ -51,29 +39,19 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0])
-    }
-  }
-
   const handleSubmit = async () => {
-    if (!file) {
-      toast('Please select a file to upload')
+    if (!link) {
+      toast('Please provide a link')
       return
     }
 
     try {
-      // Simpan file menggunakan API upload (misalnya menggunakan FormData)
-      const formData = new FormData()
-      formData.append('file', file)
-
-      // TODO: Implement file upload logic here
-      // Example: await uploadFileToServer(formData)
-
-      toast('File uploaded successfully')
+      // Mengirimkan tautan tugas menggunakan fungsi createStudentAssigment
+      await createStudentAssigment(session?.user.id as string, id, link)
+      toast('Assignment submitted successfully')
+      setLink('') // Reset input setelah submit
     } catch (error) {
-      toast('Failed to upload file')
+      toast('Failed to submit assignment')
     }
   }
 
@@ -97,20 +75,20 @@ const AssignmentCard = ({ id, day, title, description, dueDate, onDelete }: Assi
                 <DialogHeader>
                   <DialogTitle>Submit for {title} Task</DialogTitle>
                   <DialogDescription>
-                    Upload your assignment file in PDF format.
+                    Upload your assignment by providing a link.
                   </DialogDescription>
                 </DialogHeader>
-                <DialogContent>
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                    className="mb-4"
-                  />
-                  <Button onClick={handleSubmit} disabled={!file}>
-                    Upload
-                  </Button>
-                </DialogContent>
+                {/* Input untuk upload link */}
+                <input
+                  type="text"
+                  placeholder="Enter the link"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  className="w-full p-2 mt-4 text-black rounded-md"
+                />
+                <Button onClick={handleSubmit} className="mt-4">
+                  Submit Link
+                </Button>
               </DialogContent>
             </Dialog>
           )}
