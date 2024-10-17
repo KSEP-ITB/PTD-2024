@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { signIn } from "next-auth/react"
+// import { signIn } from "next-auth/react"
 
 export const getUserByUsername = async (username: any, password: any) => {
   try {
@@ -32,23 +32,23 @@ export const getUserRole = async (username: any) => {
   }
 }
 
-export const signInHandler = async (username: string, password: string) => {
-  try {
-    const result = await signIn('credentials', {
-      redirect: false,
-      username: username,
-      password: password,
-    }) 
+// export const signInHandler = async (username: string, password: string) => {
+//   try {
+//     const result = await signIn('credentials', {
+//       redirect: false,
+//       username: username,
+//       password: password,
+//     }) 
 
-    if (result?.error) {
-      console.log(result?.error)
-    } else {
-      console.log("SignIn Successfully")
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
+//     if (result?.error) {
+//       console.log(result?.error)
+//     } else {
+//       console.log("SignIn Successfully")
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 export const getUserById = async (id: string) => {
   try {
